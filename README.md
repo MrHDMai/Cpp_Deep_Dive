@@ -16,6 +16,12 @@ graph TD
     
     E --> G[Algorithm Implementation]
 
+pie
+    title Learning Progress
+    "Completed" : 43
+    "In Progress" : 27
+    "Upcoming" : 30
+
 🧠 Curriculum Roadmap
 🔍 Core Language Features (Completed ✅)
 Types & Variables (2h 39m)
