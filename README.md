@@ -30,10 +30,15 @@ Functions & Namespaces (57m)
 
 pie
     title Learning Focus Areas
+    
     "Memory Management" : 25
+    
     "Data Structures" : 35
+    
     "STL Mastery" : 20
+    
     "Algorithm Design" : 20
+    
 
 🏗️ Data Structures in Progress
 Abstract Data Types (ADTs) - 26min
