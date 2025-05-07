@@ -27,17 +27,6 @@ Conditional Statements (47m)
 Functions & Namespaces (57m)
 
 🧩 Upcoming Learning Modules
-
-pie
-    title Learning Focus Areas
-    
-    "Memory Management" : 25
-    
-    "Data Structures" : 35
-    
-    "STL Mastery" : 20
-    
-    "Algorithm Design" : 20
     
 
 🏗️ Data Structures in Progress
