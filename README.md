@@ -19,8 +19,8 @@ graph TD
 
 🧠 Curriculum Roadmap
 🔍 Core Language Features (Completed ✅)
-Types & Variables (2h 39m)
-Control Flow & Operators (1h 1m)
+Types & Variables (2h 39m)  <br>
+Control Flow & Operators (1h 1m)<br>
 Conditional Statements (47m)
 Functions & Namespaces (57m)
     
