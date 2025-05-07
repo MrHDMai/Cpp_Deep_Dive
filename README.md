@@ -16,25 +16,14 @@ graph TD
     
     E --> G[Algorithm Implementation]
 
-pie
-    title Learning Progress
-    "Completed" : 43
-    "In Progress" : 27
-    "Upcoming" : 30
 
 🧠 Curriculum Roadmap
 🔍 Core Language Features (Completed ✅)
 Types & Variables (2h 39m)
-
 Control Flow & Operators (1h 1m)
-
 Conditional Statements (47m)
-
 Functions & Namespaces (57m)
-
-🧩 Upcoming Learning Modules
     
-
 🏗️ Data Structures in Progress
 Abstract Data Types (ADTs) - 26min
 Template Programming - 22min
