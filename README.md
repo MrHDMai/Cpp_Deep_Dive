@@ -44,14 +44,20 @@ Concurrency Patterns
 Template Metaprogramming
 Optimization Techniques
 
-Cpp_Deep_Dive/
-├── Algorithms/
-│   ├── Dijkstra.cpp        # Graph pathfinding
-│   ├── Scc.cpp            # Strongly connected components
-│   └── SimpleSearch.cpp   # Basic search algorithms
-├── API_Dive/
-│   └── CurlTest.cpp       # Network operations
-└── Syntaxs_Methods/       # Core language features
-    ├── Calculator.cpp     # Operator overloading demo
-    ├── pointers.cpp       # Memory management
-    └── (12 other core concept files)
+```mermaid
+graph TD
+    A[Cpp_Deep_Dive] --> B[Algorithms]
+    A --> C[API_Dive]
+    A --> D[Syntaxs_Methods]
+    B --> B1[Dijkstra.cpp]
+    B --> B2[Scc.cpp]
+    B --> B3[SimpleSearch.cpp]
+    C --> C1[CurlTest.cpp]
+    D --> D1[Calculator.cpp]
+    D --> D2[pointers.cpp]
+
+🌱 Growing Knowledge Base
+This repository evolves daily as I progress through:
+140+ structured lessons (13% completed)
+18+ hours of advanced concepts
+Practical implementations of all theoretical concepts
