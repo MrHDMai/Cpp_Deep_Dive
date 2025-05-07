@@ -24,7 +24,7 @@ Types & Variables (2h 39m)  <br>
 Control Flow & Operators (1h 1m)<br>
 Conditional Statements (47m)<br>
 Functions & Namespaces (57m)<br>
-<ul> 
+</ul> 
     
 🏗️ Data Structures in Progress<br>
 <ul>
@@ -35,7 +35,7 @@ Pointer-Based Structures - 1h 19m<br>
 Linked Lists<br>
 Trees<br>
 Graphs (Dijkstra's Algorithm implemented)<br>
-<ul>
+</ul>
     
 ⚙️ Advanced Topics Coming Soon<br>
 <ul>
@@ -43,7 +43,7 @@ Move Semantics & Smart Pointers<br>
 Concurrency Patterns<br>
 Template Metaprogramming<br>
 Optimization Techniques<br>
-<ul>
+</ul>
     
 ## 🗂️ Project Structure
 ```
