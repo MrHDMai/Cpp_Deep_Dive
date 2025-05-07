@@ -19,12 +19,15 @@ graph TD
 
 🧠 Curriculum Roadmap<br>
 🔍 Core Language Features (Completed ✅)<br>
+<ul>
 Types & Variables (2h 39m)  <br>
 Control Flow & Operators (1h 1m)<br>
 Conditional Statements (47m)<br>
 Functions & Namespaces (57m)<br>
+<ul> 
     
 🏗️ Data Structures in Progress<br>
+<ul>
 Abstract Data Types (ADTs) - 26min<br>
 Template Programming - 22min<br>
 STL & Complexity Analysis - 27min<br>
@@ -32,13 +35,16 @@ Pointer-Based Structures - 1h 19m<br>
 Linked Lists<br>
 Trees<br>
 Graphs (Dijkstra's Algorithm implemented)<br>
-
+<ul>
+    
 ⚙️ Advanced Topics Coming Soon<br>
+<ul>
 Move Semantics & Smart Pointers<br>
 Concurrency Patterns<br>
 Template Metaprogramming<br>
 Optimization Techniques<br>
-
+<ul>
+    
 ## 🗂️ Project Structure
 ```
 Cpp_Deep_Dive/
