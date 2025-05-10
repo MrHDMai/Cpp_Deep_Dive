@@ -15,6 +15,9 @@ this optimzed by reducing run-time compilation. Consider that constexpr is best 
 template metaprogramming, and optimized precomputation.
 */
 constexpr int training(int i){
+    //consider that we are using this ternary function as a recursion method. If the input is 5,
+    //it will call the initial input and decrement until input is 0 which suffices the condition.
+    //in this case, the result will be 15 if 5 is the input.
     return(i==0)?0 : training(i-1) + i;
 }
 
