@@ -26,5 +26,15 @@ int main(){
     cout << "Index of shape:" << callindex << endl;
     executionMethod callAttck = acctHack;
     cout << acctHack << endl;
+    /* Creating char with enum*/
+    enum suits {clubs, diamonds, heart, spades};
+    /* Consider that enum itself can also be a class*/
+    enum class player: int {player1, player2, player3, player4};
+    enum suitschar : char{myClubs, myDidamonds, myHearts, mySpades};
+    suits card1 = diamonds;
+    suits card2 = suits::spades;
+    player contestent1 = player::player1;
+    char g = static_cast<int>(contestent1) + 2;
+    printf("%c \n",g);
 
 }
