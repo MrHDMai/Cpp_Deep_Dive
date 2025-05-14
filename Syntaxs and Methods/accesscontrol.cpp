@@ -54,6 +54,10 @@ public:
     }
 };
 
+/* Access control also pertains to class. Class are like structs within the above example; however, the method of inheritence
+may be different. 
+*/
+
 int main(){
     dividarr arropt;
     arropt.right = 3;
