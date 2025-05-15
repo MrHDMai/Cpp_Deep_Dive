@@ -79,10 +79,33 @@ int main(){
     car mycar[] = {"Mercedes", "Benz", "Toyota", "Honda", "VW"};
     print_name(mycar);
     i_print(mycar,5);
-    cout <<"Or using this function will yield the same difference: " << endl;
-    i_print(mycar, sizeof(mycar)/sizeof(car));
-    
-    
+    cout <<"Or using this function will yeild the same difference: " << endl;
+    //implement using the for loop to iterate through all the elements of the string arr
+    i_print(mycar, sizeof(mycar)/sizeof(car)); //consider that size of care is 5 (5 element * 256)/ car's declare char which is 256
+                                               //This would work even if the size of the array changes later instead of hardcoding which
+                                               //may break the code
+    cout <<"----------------------------------Null Pointer----------------------------------" << endl;
+    int* p = nullptr; // avoid dangling pointer
+    printf("%p\n",p);
+    int c = 45;
+    p = &c;
+    cout << p << endl;
+    cout << *p << endl;
 
+    cout << "-------------------------------Pointer Arthmetic-------------------------------" << endl;
+    int ar[]{1,2,3,4,5};
+    int *pa = ar;
+    cout << "Print pointer adress: " << pa << endl;
+    cout << "Print pointer value: " << *pa << endl;
+    cout << "1. *pa = 11 changes ar[0]" << endl;
+    *pa = 11;
+    cout << "2. pa = 13 changes ar[3]" << endl;
+    pa[2] = 13;
+    cout << "1. *(pa+3) = 14 changes ar[3]" << endl;
+    *(pa + 3) = 14;
+    for(auto val : ar){
+        cout <<  val << endl;
+    }
+    return 0;
 
 }
