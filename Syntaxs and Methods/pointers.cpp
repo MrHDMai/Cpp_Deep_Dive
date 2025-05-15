@@ -1,12 +1,31 @@
-/* The goal of a pointer is to store th address of a declared variable, given this implementation, the pointer
-doesn't make a copy of the data itself, but rather points or references the data rather than making a direct copies. Furthermore,
-pointers can be used to dynamically allocate memory, and in some instances - pointers can also be reassigned to another
-address.
+/* The goal of a pointer is to store the address of a declared variable, given this implementation, the pointer
+doesn't make a copy of the data itself, but rather points or references the data instead of making a copies - limiting the amount of resource used. 
+Furthermore, pointers can be used to dynamically allocate memory, and in some instances - pointers can also be reassigned to another
+address. There are two type of pointers - thee void pointer and the std::byte pointers. 
+
+Things to note:
+& - operan operator which can be used to initialize a pointer that is pointing to a variable
+* - dereference of operator
 */
 
 #include<iostream>
-
+#include<vector>
 using namespace std;
+
+struct car{ //creating a struct to store the name of the car intialize it to 256 byte
+    char name[256];
+
+};
+
+void print_name(car *c_ptr){ //constructor to print the name, takes in the paramter of a pointer to the car obj, call it c_ptr
+    printf("%s car \n",c_ptr->name); //print the string of the car's name, paramter is c_ptr initilized to the name variable
+}
+//using loops to pass iterate through all the car's name
+void i_print(car* cars, size_t n_cars){
+    for(size_t i = 0; i < n_cars; i++){
+        printf("%s car \n", cars[i].name);
+    }
+}
 
 int main(){
     int v = 20; 
@@ -26,4 +45,44 @@ int main(){
     cout << *ptrarr << endl; // print out the second values of the access memory from the arr. 
     ptrarr++; // post increment to find the third value;
     cout << *ptrarr << endl; // print the third value
+    int a = 10;
+    int* pt{&a};
+    *pt = 700; // overloading variable a after dereferencing it
+    cout <<*pt << endl;
+    int myvar{};
+    printf("My myvar value is: %d\n", myvar);
+    int *myvar_add = &myvar;
+    printf("&myvar value is %p\n",myvar_add);
+    printf("dereference of &myvar value is %p\n",*myvar_add);
+    cout << "----------------------------------------- "<< endl;
+    int myage = 0;
+    int * myage_add = &myage;
+    printf("Value at my age dddress is: %p\n",myage_add);
+    printf("Value at my age dddress is: %d\n",*myage_add);
+    //reassigned the value of my age as so
+    *myage_add = 10; // declare the pointer and override the information of the value within the address
+    printf("My value of the address is: %d\n", *myage_add); //use %d to print the number
+    printf("My age's address is: %p\n", myage_add); //use %p to print the pointer value
+    cout <<"--------------------------------------------" << endl;
+    // int num;
+    // cin>>num;
+    // vector<int> vec(num);
+    // for(int i = 0; i < num; i++){
+    //     cin >> vec[i];
+    // }
+    // int* vecptr = vec.data(); // we can access the value within the vector by calling the .operator with data
+    // for(int i = 0; i < vec.size(); i++){
+    //     printf("outputting values of the vector: %d\n, the address of each is %p\n",*vecptr,vecptr);
+    //     vecptr++;
+    // }
+    cout << "------------Implementation of the struct and print function------------" << endl;
+    car mycar[] = {"Mercedes", "Benz", "Toyota", "Honda", "VW"};
+    print_name(mycar);
+    i_print(mycar,5);
+    cout <<"Or using this function will yield the same difference: " << endl;
+    i_print(mycar, sizeof(mycar)/sizeof(car));
+    
+    
+
+
 }
