@@ -27,6 +27,8 @@ void i_print(car* cars, size_t n_cars){
     }
 }
 
+
+
 int main(){
     int v = 20; 
     int* ptr = &v; //& denotes the retrieval of the memeory address of the variable
@@ -104,8 +106,37 @@ int main(){
     cout << "1. *(pa+3) = 14 changes ar[3]" << endl;
     *(pa + 3) = 14;
     for(auto val : ar){
-        cout <<  val << endl;
+        cout <<"This is the mod the pervious value without loop: "  << val << endl;
     }
+    cout << "------------------" << endl;
+    //Using a loop to increment the value within the arr by 3, one can use any arthmetics
+    for(int i = 0; i < 5; i++){
+        *pa++ -=3;
+    }
+    for(auto val : ar){
+        cout <<  "Usinng loop: " << val << endl;
+    }
+    cout << endl;
+    cout <<"---------smart pointers and void----------" << endl;
+    char i_c[]{"Hello"};
+    *i_c = 'H';
+    const char *ptc{i_c};
+    cout << ptc << endl;
+    //*ptc = 'v'; // cannot write to the const function, this implementation will break
+    printf("i_c address value is: %p\n" ,*i_c);
+    printf("Valye of *ptc is: %s \n",ptc);
+    char *const cpyptr{i_c}; // recall that when declaring a value as a const - the data is a read only.
+    cout << "Value of copy pointer is: " << cpyptr << endl;
+    //--------------------------------------------------------//
+    char strarr[]{"Hello"};
+    char *const cptr{strarr};
+    *cptr = 'H';
+    cout << "*ccptr : \n" << *cptr <<endl;
+    const char *ncp = const_cast<const char *>(cptr);
+    ncp++;
+    cout << "ncp++: \n" << ncp << endl;
+    char *const ncp2 = const_cast<char *const>(ncp); // const cast will allow a new variable to be allocated to const ncp
+    cout << "ncp2: \n" << ncp2;
     return 0;
 
 }

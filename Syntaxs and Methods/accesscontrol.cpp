@@ -21,7 +21,7 @@ private:
     int year;
     
     void friend addyearderieved(addyear& increval, int result){// the addyear pvt struct is now referenced by the increval declaration
-        increval.year = result; //the alias increval will now can call the year value which is cremented by 1;
+        increval.year = result; //the alias increval will now be call the year value which is cremented by 1;
         increval.addcurrentyear(); // call the addcurrentyear function from the pvt function
         printf("The new year is: %d\n", increval.year); //print funcion for the result
     }
