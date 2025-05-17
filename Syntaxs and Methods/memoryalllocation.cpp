@@ -44,7 +44,7 @@ int main(){
     printf("----------------------calling function with pointers-----------------\n");
     int *func_ptr = new int(42);
     int *return_funct = returnval(func_ptr);
-    printf("return_function: %p\n", return_funct);
+    printf("return_function: %p\n", return_funct); // remmeber since the function declare the poitner as null - this will print 
     delete func_ptr;
     func_ptr = nullptr;
     
