@@ -2,6 +2,11 @@
 #include<vector>
 using namespace std;
 
+int *returnval(int *ptr){
+    int *myval = nullptr;
+    return myval;
+}
+
 int main(){
 
     int* a = new int (52);
@@ -15,6 +20,7 @@ int main(){
     const int size = 5;
     int *p = new int[size]; //when using new int, must leverage c++ delete function to delete the int or arry to avoid memory leak
     //consider that one the pointer variable is intialized call the pointer don't need to be dereferenced
+    //Important: Memeory allocation to type new will stay valid until the delete function is called
     p[0] = 1;
     p[1] = 2;
     for(int i = 2; i < size; i++){
@@ -34,6 +40,14 @@ int main(){
     for(int num : v){
         cout << num << endl;
     }
+
+    printf("----------------------calling function with pointers-----------------\n");
+    int *func_ptr = new int(42);
+    int *return_funct = returnval(func_ptr);
+    printf("return_function: %p\n", return_funct);
+    delete func_ptr;
+    func_ptr = nullptr;
+    
 
 
 
