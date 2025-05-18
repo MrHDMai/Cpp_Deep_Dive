@@ -12,6 +12,7 @@ Algorithms templates: .begin(), , .sort(), .rbegin(), .rend()
 #include<queue>
 #include<stack>
 #include<map>
+#include<memory>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ int main(){
     for(int i : arr){
         cout << i<< endl;
     }
-    cout <<"Using dynamic memory allocation with pointers\n" << endl;
+    cout <<"Using dynamic memory allocation with pointers: " << endl;
     //we can use raw memeory management to access and modify the element within the arr
     int* arrptr = new int[5]{10,40,50,60,90};
     arrptr[2] = 90;
@@ -30,6 +31,11 @@ int main(){
         cout << "The array values are: " << arrptr[i] << endl;
     }
     delete[] arrptr;
+    cout <<"Using smart memory allocator: " << endl;
+    std::unique_ptr<int[]> smararr(new int[3]{9,7,4});
+    cout << "Smart pointer: " << endl;
+    cout << smararr[1] << endl;
+
 
     printf("---------------------Print the vector and use sort from algo---------------------\n");
     //vector with sort from algorithm
