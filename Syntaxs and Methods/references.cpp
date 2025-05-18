@@ -18,6 +18,7 @@ references - safer than  pointers when allocating the alias to veriable and over
 */
 #include<iostream>
 using namespace std;
+#include<vector>
 
 struct yearcompute{
     int year;
@@ -43,6 +44,7 @@ struct aexp{
     }
 
 };
+
 
 struct simpleaexp{
     const int num1{2};
@@ -78,4 +80,11 @@ int main(){
     simpleaexp sae;
     simple_set(sae,6,7);
     cout << sae.result << endl;
+    int &newref = sae.result; 
+    cout << "The refernce is set to the result: " << newref << endl;
+    int newnum{400};
+    newref = newnum;
+    cout << "The refernce is set to the new number: " << newref << endl;
+
+    
 }
