@@ -1,4 +1,5 @@
 /*Functions are defined operations that can be called and used for different code implementations within the software.
+When a function is compile, the compiler will put each of the function call within a stack frame.
 These expression may contain parameters with logic which when called within the main functions, will computer the logic
 once the parameters are specified. Functions can be decalred with extern, inline and constexpt before each funcitons name.
 
@@ -10,6 +11,7 @@ inline - used to insert the function directly where it is called, often used for
     Consider that inline are just hints and doesn't guarantee inlining.
 constexpr - indicate to the compiler that the function variable and return type are assessed during compiled time.
     Consider that for these implementation, there is no memeory allocation and input or output
+
 */
 
 #include<iostream>
