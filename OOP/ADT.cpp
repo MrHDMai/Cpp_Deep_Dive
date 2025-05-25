@@ -4,7 +4,7 @@
 using namespace std;
 
 class family {
-private:
+protected:
     string myfamily;
 public:
     void setfamily(string member) {
@@ -21,6 +21,17 @@ public:
     fmember(string member){setfamily(member);}// since family doesn't have a constructor that would return a string we have to inti set family here
     string nmember() override{
         return "mom";
+    }
+};
+
+class mem : public family{
+public:
+    mem(string member){setfamily(member);}
+    void operator = (const mem &ch){
+        myfamily = ch.myfamily;
+    }
+    string nmember() override{
+        return "Hao";
     }
 };
 
@@ -60,6 +71,12 @@ public:
     }
 };
 
+template<typename L>
+void getmember(L &allmember, string member){
+    allmember.setfamily(member);
+    cout<<allmember.getfamily()<<endl;
+}
+
 template<typename T>
 void getname_sound(T &thepet){
     cout << thepet.anmlsound() << endl;
@@ -85,5 +102,9 @@ int main() {
 
     cat c = cat("Prince");
     getname_sound(c);
+
+    mem m("Hao");
+    getmember(m, "Hao");
+
     return 0;
 }
