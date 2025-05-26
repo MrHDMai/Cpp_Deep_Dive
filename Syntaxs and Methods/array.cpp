@@ -30,5 +30,16 @@ int main() {
     ptr++;
     cout << *ptr << endl;
 
+    /* Using an array length to initialize an array*/
+    cout << "Using array index" << endl;
+    int arrlength = 5;
+    int *pr = new int[arrlength]{1,2,3,4,5};
+    for(int i = 0; i < arrlength; i++){
+        cout << "values:"<<*pr << "\t"<<endl;
+        cout << "address:"<<&pr << endl;
+        pr++;
+    }
+    pr-=arrlength;
+    delete[] pr;
     return 0;
 }
