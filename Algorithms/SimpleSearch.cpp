@@ -121,24 +121,24 @@ int main(){
     for(int i = 0;i < n; i++){
         cin >> v[i];
     }
-    selection(v);
-    for(auto& num : v){
-        cout << "Selection: " << num << endl;
-    }
-    qs(v,0,v.size()-1);
-    for(auto& sorted : v){
-        cout << "Quick Sort: " << sorted << endl;
-    }
+    // selection(v);
+    // for(auto& num : v){
+    //     cout << "Selection: " << num << endl;
+    // }
+    // qs(v,0,v.size()-1);
+    // for(auto& sorted : v){
+    //     cout << "Quick Sort: " << sorted << endl;
+    // }
 
-    insertion(v);
-    for(auto& val : v){
-        cout << "Insertion: " << val << endl;
-    }
+    // insertion(v);
+    // for(auto& val : v){
+    //     cout << "Insertion: " << val << endl;
+    // }
 
-    check(v,0,v.size()-1);
-    for(auto& ms : v){
-        cout <<"Merge Sort: " << ms << endl;
-    }
+    // check(v,0,v.size()-1);
+    // for(auto& ms : v){
+    //     cout <<"Merge Sort: " << ms << endl;
+    // }
 
     bubble(v);
     for(auto& bs : v){
