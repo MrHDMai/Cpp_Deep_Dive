@@ -4,7 +4,7 @@ of the program. Consider the code snippet and include the macro in order to comp
 
 /*we shall place the macro here
 */
-#define toStr(x) #x
+#define toStr(x) #x //the has variable stringize the variable
 #define io(v) cin >> v
 #define INF 10000000
 #define foreach(v,i) for (int i = 0; i < v.size(); i++)
