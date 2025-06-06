@@ -2,6 +2,7 @@
 #include<limits>
 #include<cmath>
 #include<queue>
+#include<vector>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ void graph::addedges(int u, int v, int w){
 void graph::dijkstra(int src){
     priority_queue<node_dist, vector<node_dist>, greater<node_dist>> pq;
     vector<int> dist(vertices, numeric_limits<int>::max());
-    pq.push({src,0});
+    pq.push({0,src});
     dist[src] = 0;
     while(!pq.empty()){
         int u = pq.top().second;
@@ -32,8 +33,8 @@ void graph::dijkstra(int src){
         for(auto& neighbor : adj_list[u]){
             int v = neighbor.first;
             int weight = neighbor.second;
-            if(dist[u] > dist[v] + weight){
-                dist[u] = dist[v] + weight;
+            if(dist[v] > dist[u] + weight){
+                dist[v] = dist[u] + weight;
                 pq.push({dist[v], v});
             }
         }
