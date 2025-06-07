@@ -1,23 +1,19 @@
 #include<iostream>
-#include<cstdio>
 #include<vector>
-#include<iostream>
-#include<algorithm>
+
 using namespace std;
 
-class Matrix {
+class matrix{
 public:
     vector<vector<int>> a;
-
-    Matrix operator+(const Matrix& other){
-        Matrix result;
+    matrix operator+(const matrix& other){
+        matrix result;
         int n = a.size();
         int m = a[0].size();
-
         for(int i = 0; i < n; i++){
-            vector<int> row;
-            for(int j = 0; j <m; j++){
-                row.push_back(a[i][j] + other.a[i][j]);
+            vector<int>row(m);
+            for(int j = 0; j < m; j++){
+                row[j] = (a[i][j] + other.a[i][j]);
             }
             result.a.push_back(row);
         }
@@ -26,38 +22,33 @@ public:
 };
 
 int main(){
-    int cases,k;
+    int cases, k;
     cin >> cases;
-    for(k = 0; k < cases; k++){
-        Matrix x;
-        Matrix y;
-        Matrix result;
-        int n,m,i,j;
-        cin >> n >> m;
+    for(k = 0; k < cases;k++){
+        matrix result;
+        matrix x;
+        matrix y;
+        int m,n;
+        cin >> n >> m; 
         for(int i = 0; i < n; i++){
-            vector<int> b;
-            int num;
+            vector<int> b(m);
             for(int j = 0; j < m; j++){
-                cin >> num;
-                b.push_back(num);
+                cin >> b[j];
             }
             x.a.push_back(b);
         }
         for(int i = 0; i < n; i++){
-            vector<int> b;
-            int num;
+            vector<int> b(m);
             for(int j = 0; j < m; j++){
-                cin >> num;
-                b.push_back(num);
+                cin >> b[j];
             }
             y.a.push_back(b);
         }
         result = x + y;
-        for(int i = 0; i < n; i++){
+        for(int i = 0; i <n; i++){
             for(int j = 0; j < m; j++){
-                cout << result.a[i][j] << " ";
+                cout << result.a[i][j] << " " << endl;
             }
-            cout << endl;
         }
     }
     return 0;
