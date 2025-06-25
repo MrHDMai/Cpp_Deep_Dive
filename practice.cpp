@@ -1,37 +1,64 @@
 #include<iostream>
 #include<vector>
-#include<algorithm>
-#include<deque>
+#include<queue>
+#include<limits>
+
 using namespace std;
 
-void printmax(int arr[], int n, int k){
-    deque<int> dq;
-    for(int i = 0; i < n; i++){
-        while(!dq.empty() && dq.front() <= i - k){
-            dq.pop_front();
+typedef pair<int,int> node_dist;
+
+class graph{
+    int vertices;
+    vector<vector<node_dist>> adj;
+public:
+    graph(int vertices) : vertices(vertices), adj(vertices){};
+    void addedges(int u, int v, int w);
+    void dijkstra(int src);
+};
+
+void graph :: addedges(int u, int v, int w){
+    adj[u].emplace_back(v,w);
+    adj[v].emplace_back(u,w);
+};
+
+void graph :: dijkstra(int src){ 
+    priority_queue <node_dist, vector<node_dist>, greater<node_dist>> pq;
+    vector<int> dist(vertices,numeric_limits<int>::max());
+    pq.push({0,src});
+    dist[src] = 0;
+    while(!pq.empty()){
+        int u = pq.top().second;
+        pq.pop();
+        for(auto& neighbor : adj[u]){
+            int v = neighbor.first;
+            int weight = neighbor.second;
+            if(dist[v] > dist[u] + weight){
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v],v});
+            }
         }
-        while(!dq.empty() && arr[i] >= arr[dq.back()]){
-            dq.pop_back();
+    }
+    for(int i = 0; i < vertices; i++){
+        if(i < numeric_limits<int>::max()){
+            cout << "The distance from " << i << " is " << dist[i] << endl;
+        } else {
+            cout << "The distance to " << i << " is impossible";
         }
-        dq.push_back(i);
-        if(i > k - 1){
-            cout << arr[dq.front()] << " ";
-        }
-        cout << endl;
     }
 }
 
 
 int main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        int arr[n];
-        for(int i = 0; i < n; i++){
-            cin >> arr[i];
-            printmax(arr,n,k);
-        }
+    int n, m, u,w,v;
+    cin >> n,m;
+    graph g(n);
+    cout << "enter the edges of the graph (u, v, w)";
+    cin >> u >> v >> w;
+    for(int i = 0; i < m; i++){
+        g.addegdes(u,v,w);
     }
+    int src;
+    cout << "Enter the src" << endl;
+    cin >> src;
+    g.dijkstra(int src);
 }

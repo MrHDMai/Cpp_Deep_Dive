@@ -23,7 +23,8 @@
         "unordered_set": "cpp",
         "string_view": "cpp",
         "rope": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "queue": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
