@@ -19,7 +19,7 @@ int main(){
     cout << "Enter number of vertices and edges: ";
     cin>> vertices >> edges;
     vector<vector<int>> adj(vertices);
-    cout << "Enter " << edges << "edges (u v pairs): \n";
+    cout << "Enter " << edges << " edges (u v pairs): \n";
     for(int i = 0; i < edges; i++){
         int u,v;
         cin >> u >> v;
