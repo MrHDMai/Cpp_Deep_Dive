@@ -10,7 +10,7 @@ void isort(vector<T>& bucket){
     for(size_t i = 0; i < bucket.size(); i++){
         T target = bucket[i];
         int j = i - 1;
-        while(j > 0 && bucket[j] > target){
+        while(j >= 0 && bucket[j] > target){
             bucket[j + 1] = bucket[j];
             --j;
         }
