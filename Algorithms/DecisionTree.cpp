@@ -1,158 +1,157 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <unordered_map>
-#include <unordered_set>
-#include <cmath>
-#include <tuple>
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<unordered_set>
+#include<cmath>
+#include<tuple>
 
 using namespace std;
 
-// Node structure for the decision tree
-struct Node {
-    int featureIndex = -1;
+struct node{
+    int featIndex = -1;
     string label = "";
     string condition = "";
-    Node* left = nullptr;
-    Node* right = nullptr;
+    node* left = nullptr;
+    node* right = nullptr;
 
-    ~Node() {
+    ~node(){
         delete left;
         delete right;
     }
 };
 
-// Compute entropy of a label vector
-double entropy(const vector<string>& labels) {
-    unordered_map<string, int> freq;
-    for (const auto& label : labels)
+double entropy(const vector<string>& labels){
+    unordered_map<string,int> freq;
+    for(const auto& label : labels)
         freq[label]++;
-
     double e = 0.0;
-    for (const auto& [label, count] : freq) {
-        double p = (double)count / labels.size();
-        e -= p * log2(p);
+    for(const auto& [label,count]:freq){
+        double p = (double)count/labels.size();
+        e -= p* log2(p);
     }
     return e;
 }
 
-// Split the data into two groups based on feature value
-pair<vector<int>, vector<int>> split(const vector<vector<string>>& data, int col, const string& value) {
-    vector<int> leftIdx, rightIdx;
-    for (int i = 0; i < data.size(); ++i) {
-        if (data[i][col] == value)
-            leftIdx.push_back(i);
+pair<vector<int>,vector<int>> split(const vector<vector<string>>& data, int col, const string& value){
+    vector<int> leftindex,rightindex;
+    for(int i = 0;  i < data.size(); i++){
+        if(data[i][col] == value)
+            leftindex.push_back(i);
         else
-            rightIdx.push_back(i);
+            rightindex.push_back(i);
     }
-    return {leftIdx, rightIdx};
+    return {leftindex,rightindex};
 }
 
-// Find the best split based on information gain
-tuple<int, string, double> bestSplit(const vector<vector<string>>& data, const vector<string>& labels) {
-    int bestCol = -1;
-    string bestVal;
-    double bestGain = -1;
-    double baseEntropy = entropy(labels);
-    int numFeatures = data[0].size();
-
-    for (int col = 0; col < numFeatures; ++col) {
+tuple<int,string,double> bestsplit(const vector<vector<string>>& data, const vector<string>& labels){
+    int bestcol = -1;
+    string bestval;
+    double bestgain = -1;
+    double baseentropy = entropy(labels);
+    int numfeatures = data[0].size();
+    for(int col = 0; col < numfeatures; col++){
         unordered_set<string> values;
-        for (const auto& row : data)
+        for(const auto& row : data)
             values.insert(row[col]);
+        for(const auto& val : values){
+            auto[leftindex,rightindex] = split(data,col,val);
+            if(leftindex.empty()||rightindex.empty()) continue;
 
-        for (const auto& val : values) {
-            auto [leftIdx, rightIdx] = split(data, col, val);
-            if (leftIdx.empty() || rightIdx.empty()) continue;
+            vector<string> leftlabels, rightlabels;
+            for(int i : leftindex) leftlabels.push_back(labels[i]);
+            for(int i : rightindex) rightlabels.push_back(labels[i]);
 
-            vector<string> leftLabels, rightLabels;
-            for (int i : leftIdx) leftLabels.push_back(labels[i]);
-            for (int i : rightIdx) rightLabels.push_back(labels[i]);
-
-            double p = (double)leftLabels.size() / labels.size();
-            double infoGain = baseEntropy - (p * entropy(leftLabels) + (1 - p) * entropy(rightLabels));
-
-            if (infoGain > bestGain) {
-                bestGain = infoGain;
-                bestCol = col;
-                bestVal = val;
+            double p = (double)leftlabels.size()/labels.size();
+            double infogain = baseentropy - (p * entropy(leftlabels) + (1 - p) * entropy(rightlabels));
+            if(infogain > bestgain){
+                bestgain = infogain;
+                bestcol = col;
+                bestval = val;
             }
         }
-    }
-
-    return {bestCol, bestVal, bestGain};
+    } 
+    return {bestcol, bestval, bestgain};
 }
 
-// Recursively build the decision tree
-Node* buildTree(const vector<vector<string>>& data, const vector<string>& labels) {
+node* buildtree(const vector<vector<string>>& data, const vector<string>& labels){
     unordered_map<string, int> freq;
-    for (const auto& l : labels) freq[l]++;
-
-    if (freq.size() == 1) {
-        return new Node{-1, labels[0]};
+    for(const auto& l : labels) freq[l]++;
+    if(freq.size() == 1){
+        return new node{-1,labels[0]};
     }
-
-    auto [bestCol, bestVal, gain] = bestSplit(data, labels);
-    if (gain <= 0) {
+    auto [bestcol, bestval, gain] = bestsplit(data, labels);
+    if(gain <= 0){
         string majority;
-        int maxCount = 0;
-        for (auto& [label, count] : freq)
-            if (count > maxCount) tie(majority, maxCount) = {label, count};
-        return new Node{-1, majority};
+        int maxcount = 0;
+        for(auto& [label, count] : freq){
+            if(count > maxcount){
+                majority = label;
+                maxcount = count;
+            }
+        }
+        return new node{-1, majority};
     }
-
-    auto [leftIdx, rightIdx] = split(data, bestCol, bestVal);
-    vector<vector<string>> leftData, rightData;
-    vector<string> leftLabels, rightLabels;
-
-    for (int i : leftIdx) {
-        leftData.push_back(data[i]);
-        leftLabels.push_back(labels[i]);
+    auto[leftindex,rightindex] = split(data, bestcol, bestval);
+    vector<vector<string>> leftdata, rightdata;
+    vector<string> leftlabels, rightlabels;
+    for(auto i : leftindex){
+        leftdata.push_back(data[i]);
+        leftlabels.push_back(labels[i]);
     }
-    for (int i : rightIdx) {
-        rightData.push_back(data[i]);
-        rightLabels.push_back(labels[i]);
+    for(int i : rightindex){
+        rightdata.push_back(data[i]);
+        rightlabels.push_back(labels[i]);
     }
-
-    Node* node = new Node{bestCol, "", bestVal};
-    node->left = buildTree(leftData, leftLabels);
-    node->right = buildTree(rightData, rightLabels);
-    return node;
+    node* Node = new node{bestcol, "", bestval};
+    Node->left = buildtree(leftdata, leftlabels);
+    Node->right = buildtree(rightdata,rightlabels);
+    return Node;
 }
 
-// Predict the label for a sample
-string predict(Node* root, const vector<string>& sample) {
-    while (root->featureIndex != -1) {
-        if (sample[root->featureIndex] == root->condition)
+string predict(node* root, const vector<string>& sample){
+    while(root -> featIndex != -1){
+        if(sample[root->featIndex] == root->condition)
             root = root->left;
-        else
+        else 
             root = root->right;
     }
     return root->label;
 }
 
-int main() {
+void printTree(node* root, int depth = 0) {
+    if (!root) return;
+    for (int i = 0; i < depth; ++i) cout << "  ";
+    if (root->featIndex == -1) {
+        cout << "Label: " << root->label << endl;
+    } else {
+        cout << "Feature[" << root->featIndex << "] == " << root->condition << "?" << endl;
+        printTree(root->left, depth + 1);
+        printTree(root->right, depth + 1);
+    }
+}
+
+
+
+int main(){
     vector<vector<string>> data = {
-        {"sunny", "hot", "high", "FALSE"},
-        {"sunny", "hot", "high", "TRUE"},
-        {"overcast", "hot", "high", "FALSE"},
-        {"rainy", "mild", "high", "FALSE"},
-        {"rainy", "cool", "normal", "FALSE"},
-        {"rainy", "cool", "normal", "TRUE"},
-        {"overcast", "cool", "normal", "TRUE"},
-        {"sunny", "mild", "high", "FALSE"},
-        {"sunny", "cool", "normal", "FALSE"},
-    };
+        {"sunny","hot","high", "FALSE"},
+        {"sunny","hot","high", "TRUE"},
+        {"overcase","hot","high", "FALSE"},
+        {"rainy","mild","high", "FALSE"},
+        {"sunny","cool","normal", "FALSE"},
+        {"rainy","cool","normal", "TRUE"},
+        {"overcast","cool","normal", "TRUE"},
+        {"sunny","mild","high", "FALSE"},
+        {"sunny","cool","normal", "FALSE"},
 
+    };
     vector<string> labels = {
-        "no", "no", "yes", "yes", "yes", "no", "yes", "no", "yes"
+        "no","no","yes","yes","yes","no","yes","no","yes"
     };
-
-    Node* root = buildTree(data, labels);
-
-    vector<string> test = {"sunny", "cool", "normal", "TRUE"};
-    cout << "Prediction: " << predict(root, test) << endl;
-
+    node* root = buildtree(data,labels);
+    vector<string> test{"sunny","cool","normal","TRUE"};
+    cout << "Prediction: " << predict(root,test) << endl;
+    printTree(root);
     delete root;
     return 0;
 }
