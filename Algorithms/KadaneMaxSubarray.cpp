@@ -1,30 +1,29 @@
-//usage: max profit in quant engineering, segment windws within AI, system usage spike
-
 #include<iostream>
 #include<climits>
 
 using namespace std;
 
-int kadane(int* arr, int n){
-    int maxthus = INT_MIN;
-    int maxthushere = 0;
-
+int kandane(int* arr, int n){
+    int MaxNum = INT_MIN;
+    int Maxthus = 0;
     int* ptr = arr;
-    for(int i = 0; i < n; ++i, ++ptr){
-        maxthushere += *ptr;
-        if(maxthus < maxthushere)
-            maxthus = maxthushere;
-
-        if(maxthushere < 0)
-            maxthushere = 0;
+    for(int i = 0; i < n; ++i,++ptr){
+        maxthus+=*ptr;
+        if(MaxNum < maxthus)
+            Maxnum = maxthus;
+        if(maxthus <= 0)
+            maxthus =  0;
     }
-    return maxthus;
+    return MaxNum; 
 }
 
-int main(){
-    int arr[] = {-2,-3,4,-1,-2,1,5,-3};
-    int size = sizeof(arr)/sizeof(arr[0]);
-    int maxsub = kadane(arr,size); 
+int main() {
+    int arr[] = {-2, -3, 4, -1, -2, 1, 5, -3};
+    int size = sizeof(arr) / sizeof(arr[0]);
 
-    cout <<maxsub << endl;
+    int maxSubarraySum = kadane(arr, size);
+
+    std::cout << "Maximum Subarray Sum: " << maxSubarraySum << std::endl;
+
+    return 0;
 }
