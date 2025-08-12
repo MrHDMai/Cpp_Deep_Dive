@@ -24,7 +24,8 @@
         "string_view": "cpp",
         "rope": "cpp",
         "slist": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "random": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
