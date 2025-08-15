@@ -59,7 +59,6 @@ void insertion(vector<int>& v){
         int j = i - 1;
         while (j >= 0 && v[j] > key){
             swap(v[i],v[j]);
-            --j;
         }
         v[j + 1] = key;
     }
@@ -70,7 +69,7 @@ int partition(vector<int>& v, int low, int high){
     int i = low - 1;
     for(int j = low; j < high; j++){
         if (v[j] < pvt){
-            i++;
+            ++i;
             swap(v[i],v[j]);
         }
     }
