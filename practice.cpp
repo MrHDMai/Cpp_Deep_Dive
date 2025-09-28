@@ -538,5 +538,5 @@ int knapsack(int capacity, int n, int* wt, int* v){
 
 
 int main(){
-
+    return 0;
 }
