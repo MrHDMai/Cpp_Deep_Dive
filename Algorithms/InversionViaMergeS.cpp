@@ -11,7 +11,7 @@ long long mergeandcount(vector<int>& arr, int left, int mid, int right){
         if(leftsub[i] <= rightsub[j]){
             arr[k++] = leftsub[i++];
         } else{
-            arr[k++] = leftsub[i++];
+            arr[k++] = leftsub[j++];
             inv_count+=(leftsub.size() - i); 
         }
     }
