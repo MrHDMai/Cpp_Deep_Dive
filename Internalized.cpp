@@ -1,18 +1,21 @@
 #include<iostream>
 #include<vector>
 #include<queue>
-#include<limits>
 #include<stack>
+#include<limits>
+#include<limits>
+#include<algorithm>
+
 using namespace std;
 
-typedef pair<int,int> node_d;
+typedef pair<int,int> nd;
 class dijkstra{
     int vertices;
-    vector<vector<node_d>> adj;
+    vector<vector<nd>> adj;
 public:
     dijkstra(int vertices) : vertices(vertices), adj(vertices){};
     void addedges(int u, int v, int w);
-    void dijk(int src); 
+    void dijk(int src);
 };
 
 void dijkstra :: addedges(int u, int v, int w){
@@ -20,15 +23,15 @@ void dijkstra :: addedges(int u, int v, int w){
 }
 
 void dijkstra :: dijk(int src){
-    priority_queue<node_d, vector<node_d>, greater<node_d>> pq;
+    priority_queue<nd, vector<nd>, greater<nd>>pq;
     pq.push({0,src});
-    vector<int> dist(vertices, numeric_limits<int>::max());
+    vector<int> dist(vertices,numeric_limits<int>::max());
     dist[src] = 0;
     while(!pq.empty()){
         int dist_u = pq.top().first;
         int u = pq.top().second;
         pq.pop();
-        if(dist_u > u) continue; 
+        if(dist_u > u) continue;
         for(auto& neighbors : adj[u]){
             int v = neighbors.first;
             int weight = neighbors.second;
@@ -36,13 +39,13 @@ void dijkstra :: dijk(int src){
                 dist[v] = dist[u] + weight;
                 pq.push({dist[v],v});
             }
-        }
+        } 
     }
     for(int i = 0; i < vertices; i++){
         if(dist[i] < numeric_limits<int>::max()){
-            cout << "Distance from " << src << "is: " << dist[i] << endl;
-        } else{
-            cout <<"Distance is unobtainable.";
+            cout << "Distance cost is: " << dist[i] << endl;
+        } else {
+            cout << "Distance is not obtainable";
         }
     }
 }
@@ -67,9 +70,9 @@ void SCC :: dfs(int node, vector<bool>& known, stack<int>& sk){
     known[node] = true;
     for(auto& neighbors : adj[node]){
         if(!known[neighbors])
-            dfs(neighbors,known,sk);
-    }
-    sk.push(node); 
+            dfs(neighbors, known,sk);
+    } 
+    sk.push(node);
 }
 
 SCC SCC :: transpose(){
@@ -83,7 +86,7 @@ SCC SCC :: transpose(){
 
 void SCC :: dfs2(int node, vector<bool>& known){
     known[node] = true;
-    cout << node << " ";
+    cout << node <<" ";
     for(auto& neighbors : adj[node]){
         if(!known[neighbors])
             dfs2(neighbors, known);
@@ -96,9 +99,9 @@ void SCC :: scc(){
     for(int i = 0; i < vertices; i++){
         if(!known[i])
             dfs(i,known,sk);
-    }
-    cout << "SCC: " << endl;
-    fill(known.begin(),known.end(), false);
+    } 
+    cout << "SCC : " << endl;
+    fill(known.begin(),known.end(),false);
     SCC transp = transpose();
     while(!sk.empty()){
         int u = sk.top();
@@ -106,7 +109,7 @@ void SCC :: scc(){
         if(!known[u])
             transp.dfs2(u,known);
         cout << endl;
-    } 
+    }
 }
 
 void bfs(int node, vector<bool>& known, vector<vector<int>>& adj){
@@ -142,9 +145,9 @@ void dfsI(int node, vector<bool>& known, vector<vector<int>>& adj){
         int u = sk.top();
         sk.pop();
         if(known[u]) continue;
-        known[u]= true;
+        known[u] = true;
         cout << u << endl;
-        for(int i = adj.size()-1; i>= 0; --i){
+        for(int i = adj.size() - 1; i>= 0; --i){
             int neighbors = adj[i][u];
             if(!known[neighbors])
                 sk.push(neighbors);
@@ -152,20 +155,43 @@ void dfsI(int node, vector<bool>& known, vector<vector<int>>& adj){
     }
 }
 
+pair<int,vector<int>> cuttingrode(const vector<int>& price, int n){
+    vector<int> dp(n + 1, 0);
+    vector<int> cut(n + 1, 0);
+    for(int i = 1; i < n; i++){
+        int maxv = -1;
+        for(int j = 0; j < i; j++){
+            if(maxv < price[j] + dp[i-j-1]){
+                maxv = price[j] + dp[i-j-1];
+                cut[i] = j + 1;
+            }   
+        }
+        dp[i] = maxv;
+    }
+    vector<int> solcut;
+    int length = n;
+    while(length > 0){
+        solcut.push_back(cut[length]);
+        length -= cut[length];
+    }
+    return{dp[n],solcut};
+}
+
 class detection{
     int vertices;
     vector<vector<int>> adj;
     bool dfs(int node, vector<bool>& known, vector<bool>& recsk){
         known[node] = true;
-        recsk[node] = true; 
+        recsk[node] = true;
         for(auto& neighbors : adj[node]){
             if(!known[neighbors] && dfs(neighbors,known,recsk))
                 return true;
-            else if(recsk[neighbors])
-                return true;
+            else 
+                recsk[neighbors]; 
+                    return true; 
         }
         recsk[node] = false;
-        return false;
+        return false; 
     }
 public:
     detection(int vertices) : vertices(vertices), adj(vertices){};
@@ -175,29 +201,38 @@ public:
     bool hascycle(){
         vector<bool> known(vertices, false);
         vector<bool> recsk(vertices, false);
-        for(int i = 0; i < vertices; i++){
-            if(!known[i]&&dfs(i,known,recsk)){
-                return true;
-            }
+        for(int i = 0; i < vertices; i ++){
+            if(!known[i] && dfs(i , known, recsk))
+                return true;  
         }
         return false;
     }
+
 };
 
-class undirectdect{
-    vector<int> parent, rank;
+struct edges{
 public:
-    undirectdect(int n){
+    int u, v, w;
+    bool operator < (const edges& other) const{
+        return w < other.w; 
+    }
+};
+
+class undirectDetec{
+    vector<int> parent, rank; 
+public:
+    undirectDetec(int n){
         parent.resize(n);
         rank.assign(n,0);
         for(int i = 0; i < n; i++){
-            if(parent[i]==0)
+            if(parent[i] == 0)
                 parent[i] = i;
         }
     }
     int find(int x){
-        if(parent[x]!=x)
+        if(parent[x]!=x){
             parent[x] = find(parent[x]);
+        }
         return parent[x];
     }
     bool unionset(int x, int y){
@@ -208,63 +243,28 @@ public:
         else{
             parent[yr] = xr;
             parent[xr] ++;
-        }
-        return true; 
+        } 
+        return true;
     }
 };
 
 bool cyclic(int node, vector<pair<int,int>>& edges){
-    undirectdect ud(node);
+    undirectDetec ud(node);
     for(auto& [u,v] : edges){
         if(!ud.unionset(u,v))
             return true;
     }
-    return  false;
+    return false; 
 }
 
-bool subset(int* arr, int n, int target){
-    int** dp = new int*[n];
-    for(int i = 0; i < n; i++)
-        dp[i] = new int[target + 1];
-    for(int i = 0; i < n; i++)
-        dp[i][0] = true;
-    for(int j = 0; j < n; j++)
-        dp[j][0] = false;
-    for(int i = 0; i < n; i++){
-        for(int sum = 1; sum < target; sum++){
-            if(arr[i] > target)
-                dp[i][sum] = dp[i-1][sum]||dp[i-1][sum-arr[i-1]];
-            else
-                dp[i][sum] = dp[i-1][sum];
-        }
+void kruksalmst(int node, vector<edges>& edg){
+    sort(edg.begin(),edg.end());
+    undirectDetec ud(node);
+    int mstcounter = 0;
+    for(auto& neighbors : edg){
+        if(ud.unionset(neighbors.u,neighbors.v));
+            mstcounter += neighbors.w; 
     }
-    bool result = dp[n][target];
-    for(int i = 0; i < n; i++)
-        delete[] dp[i];
-    delete[]dp;
-    return result; 
-}
-
-pair<int,vector<int>> cuttingrode(const vector<int>& price, int n){
-    vector<int> dp(n + 1, 0);
-    vector<int> cut(n + 1, 0);
-    for(int i = 1; i < n; i++){
-        int maxv = -1;
-        for(int j = 0; j < n; j++){
-            if(maxv < price[j] + dp[j-i-1]){
-                maxv = price[j] + dp[j-i-1];
-                cut[i] = j + 1;
-            }
-        }
-        dp[i] = maxv;
-    }
-    vector<int> solcut;
-    int length = n;
-    while(length>0){
-        solcut.push_back(cut[length]);
-       length -= solcut[length]; 
-    }
-    return {dp[n],solcut};
 }
 
 int fibtd(vector<int>& v, int n){
@@ -275,20 +275,19 @@ int fibtd(vector<int>& v, int n){
 }
 
 int fibbu(int n){
-    if(n<= 1) return n;
+    if(n <= 1) return n;
     vector<int> v;
     v[0] = 0;
     v[1] = 1;
     for(int i = 2; i <= n; i++){
         v[i] = v[n-1] + v[n-2];
     }
-    return v[n];
 }
 
 int fibspc(int n){
     if(n <= 1) return n;
-    int prev2 = 0,prev1 = 0,crrt;
-    for(int i = 2; i < n; i++){
+    int prev2 = 0, prev1 = 0, crrt;
+    for(int i = 2; i <= n; i++){
         crrt = prev2 + prev1;
         prev2 = prev1;
         prev1 = crrt;
@@ -303,42 +302,85 @@ inline void swap(int* a, int* b){
 }
 
 void heapify(int arr[], int n, int i){
-    int largest = i;
+    int high = i;
     int left = 2 * i + 1;
     int right = 2 * i + 2;
-    if(left < n && arr[left] > arr[largest]) largest = left;
-    if(right < n && arr[right] > arr[largest]) largest = right;
-    if(largest!=i){
-        swap(&arr[i],&arr[largest]);
-        heapify(arr,n,largest);
+    if(left < n && arr[left] > arr[high]) high = left;
+    if(right < n && arr[right] > arr[high]) high = right;
+    if(high != i){
+        swap(&arr[i],&arr[high]);
+        heapify(arr,n,high);
     }
 }
 
-void heap(int arr[], int n){
-    for(int i = n/2-1; i>= 0; --i)
+void hs(int arr[], int n){
+    for(int i = n/2-1; i>=0; --i)
         heapify(arr,n,i);
-    for(int i = n-1; i >= 0; --i){
-        swap(&arr[0],&arr[i]);
+    for(int i = n-1; i>=0; --i){
+        swap(&arr[i],&arr[0]);
         heapify(arr,i,0);
     }
 }
 
-int knapsack(int capacity, int n, int* wt, int* v){
-    int** dp = new int*[n + 1];
-    for(int i = 0; i <= n; i++)
-        dp[i] = new int[capacity + 1];
-    for(int i = 0; i < n; i++){
-        for(int w = 0; w <= capacity; w++){
-            if(i == 0 && w ==0)
-                dp[i][w] = 0;
-            else if (wt[i-1] < w)
-                dp[i][w] = (v[i-1] - dp[i-1][w-wt[i-1]]) > dp[i-1][w] ? (v[i-1] - dp[i-1][w-wt[i-1]]) : dp[i-1][w];
-            else
-                dp[i-1][w];
+long long invmerge(vector<int>&v, int left, int mid, int right){
+    vector<int> l(v.begin()+ left, v.begin() + mid + 1), r(v.begin() + mid + 1, v.begin() + right + 1);
+    int invcount = 0;
+    int i = 0, j = 0, k = left;
+    while(i < l.size() && j < r.size()){
+        if(l[i] <= r[j])
+            v[k++] = l[i++];
+        else{
+            v[k++] = r[j++];
+            invcount += (l.size()-1);
         }
     }
-    bool result = dp[n][capacity];
-    for(int i = 0; i <= n; i++)
+    while(i < l.size())
+        v[k++] = l[i++];
+    while(j < r.size())
+        v[k++] = r[j++];
+    return invcount;
+}
+
+long long mergecount(vector<int>& v, int left, int right){
+    int invcount = 0;
+    if(left < right){
+        int mid = left + (right - left)/2;
+        invcount += mergecount(v,left,mid);
+        invcount += mergecount(v,mid+1,right);
+        invcount += invmerge(v,left,mid,right);
+    }
+}
+
+int kadane(int* arr, int n){
+    int maxnum = INT_MIN;
+    int maxthus = 0;
+    int* ptr = arr;
+    for(int i = 0; i < n; i++){
+        maxthus += *ptr;
+        if(maxnum > maxthus)
+            maxnum = maxthus;
+        if(maxthus <= 0)
+            maxthus = 0;
+    }
+    return maxnum;
+}
+
+bool knaksack(int capacity, int n, int* wt, int* v){
+    int** dp = new int*[n + 1];
+    for(int i = 0; i < n; i++)
+        dp[i] = new int[capacity + 1];
+    for(int i = 0; i <= n; i++){
+        for(int w = 0; w <= n; w++){
+            if(i == 0 || w == 0)
+                dp[i][w] = 0;
+            else if(wt[i-1] <= w)
+                dp[i][w] = (v[i-1] + dp[i-1][w-wt[i-1]]) > dp[i-1][w] ? (v[i-1] + dp[i-1][w-wt[i-1]]) : dp[i-1][w];
+            else
+                dp[i-1][w]; 
+        }
+    }
+    bool result =  dp[n][capacity];
+    for(int i = 0; i < n; i++)
         delete[] dp[i];
     delete[] dp;
     return result;
@@ -346,11 +388,11 @@ int knapsack(int capacity, int n, int* wt, int* v){
 
 int lowerbound(int* arr, int n, int key){
     int low = 0, high = n;
-    while(low < high){
-        int mid = low + (high-low)/2;
+    if(low < high){
+        int mid = low + (high - low)/2;
         if(arr[mid] > key)
             high = mid;
-        else
+        else 
             low = mid + 1;
     }
     return low;
@@ -362,24 +404,55 @@ int lis(int* arr, int n){
     for(int i = 0; i < n; i++){
         int index = lowerbound(tail,length,arr[i]);
         tail[index] = arr[i];
-        if(index==length)
+        if(index == length)
             ++length;
     }
+    delete[] tail;
     return length;
 }
 
-int kadane(int* arr, int n){
-    int maxnum = INT_MIN;
-    int maxthus = 0;
-    int* ptr = arr;
+bool subset(int* arr, int n, int target){
+    bool** dp = new bool*[n + 1];
+    for(int i = 0; i < n; i++)
+        dp[i] = new bool[target + 1];
     for(int i = 0; i < n; i++){
-        maxthus += *ptr;
-        if(maxnum > maxthus)
-            maxnum = maxthus;
-        if(maxthus < 0)
-            maxthus = 0;
+        for(int sum = 1; sum < target; sum++){
+            if(arr[i] < sum){
+                dp[i][sum] = dp[i-1][sum] || dp[i-1][sum-arr[i-1]];
+            } else{
+                dp[i-1][sum];
+            }
+        }
     }
-    return maxnum;
+    bool result = dp[n][target];
+    for(int i = 0; i < n; i++)
+        delete[]dp[i];
+    delete[] dp;
+    return result; 
+}
+
+const int inf = 1e9;
+typedef pair<int,int> pii;
+void primmst(int vertices, vector<vector<pii>>& adj){
+    priority_queue<pii,vector<pii>, greater<pii>> pq;
+    vector<int> key(vertices, inf);
+    vector<bool> known(vertices,false);
+    pq.push({0,0});
+    int counter = 0;
+    while(!pq.empty()){
+        int u = pq.top().second;
+        int weight = pq.top().first;
+        pq.pop();
+        if(known[u]) continue;
+        known[u] = true;
+        counter += weight;
+        for(auto& [v,w] : adj[u]){
+            if(!known[v] && w < key[v]){
+                key[v] = w;
+                pq.push({v,w});
+            }
+        }
+    }
 }
 
 void bubble(vector<int>& v){
@@ -391,27 +464,6 @@ void bubble(vector<int>& v){
                 v[j + 1] = temp;
             }
         }
-    }
-}
-
-int partition(vector<int>& v, int low, int high){
-    int pvt = v[high];
-    int i = low - 1;
-    for(int j = low; j < high; j++){
-        if(v[j] < pvt){
-            ++i;
-            swap(v[i],v[j]);
-        }
-    }
-    swap(v[i + 1],v[high]);
-    return i + 1;
-}
-
-void qs(vector<int>& v, int low, int high){
-    if(low < high){
-        int pii = partition(v,low,high);
-        qs(v,low,pii-1);
-        qs(v,pii+1,high);
     }
 }
 
@@ -427,9 +479,30 @@ void selection(vector<int>& v){
     }
 }
 
+int partition(vector<int>& v, int low, int high){
+    int pvt = high;
+    int i = low - 1;
+    for(int j = low; j < high; j++){
+        if(v[j] < pvt){
+            ++i;
+            swap(v[i],v[j]);
+        }
+    }
+    swap(v[i + 1],v[high]);
+    return i + 1;
+}
+
+void qs(vector<int>& v, int low, int high){
+    if(low < high){
+        int mid = partition(v,low,high);
+        qs(v,low,mid-1);
+        qs(v,mid+1,high);
+    }
+}
+
 void insertion(vector<int>& v){
     for(int i = 0; i < v.size(); i++){
-        int  key = v[i];
+        int key = v[i];
         int j = i - 1;
         while(j >= 0 && v[j] > key){
             v[j + 1] = v[j];
@@ -439,20 +512,20 @@ void insertion(vector<int>& v){
     }
 }
 
-void bs(vector<int>& v, int numofbucket = 10){
-    if(v.empty()) return; 
-    int maxv = v[0];
+void bucketsort(vector<int>& v, int numofbuckets = 10){
+    if(v.empty()) return;
     int minv = v[0];
+    int maxv = v[0];
     for(auto& elem : v){
         if(minv > elem) elem = minv;
         if(maxv < elem) elem = maxv;
-    }
-    if(maxv == minv) return;
-    int range = (maxv-minv)/static_cast<int>(numofbucket);
+    } 
+    if(minv == maxv) return;
+    int range = (maxv - minv)/static_cast<int>(numofbuckets);
     if(range == 0) range = 1;
-    vector<vector<int>> buckets(numofbucket);
+    vector<vector<int>> buckets(numofbuckets);
     for(auto& elem : v){
-        int bucketindex = min(static_cast<int>((elem-minv)/range),numofbucket-1);
+        int bucketindex = min(static_cast<int>((elem-minv)/range),numofbuckets-1);
         buckets[bucketindex].push_back(elem);
     }
     int index = 0;
@@ -464,17 +537,17 @@ void bs(vector<int>& v, int numofbucket = 10){
     }
 }
 
-void ms(vector<int>& v, int left, int mid, int right){
-    int n1 = mid - left + 1; 
+void merge(vector<int>& v, int left,int mid, int right){
+    int n1 = mid - left + 1;
     int n2 = right - mid;
     vector<int> l(n1),r(n2);
     for(int i = 0; i < n1; i++)
         l[i] = v[left + i];
     for(int j = 0; j < n2; j++)
-        r[j] = v[mid - j - 1];
+        r[j] = v[mid + j + 1];
     int i = 0, j = 0, k = left;
     while(i < n1 && j < n2){
-        if(l[i] < r[j]){
+        if(l[i] <= r[j]){
             v[k] = l[i];
             i++;
         } else{
@@ -484,9 +557,9 @@ void ms(vector<int>& v, int left, int mid, int right){
         k++;
     }
     while(i < n1){
-        v[k] = l[i];
+        v[k]=l[i];
         i++;
-        k++;
+        k++;;
     }
     while(j < n2){
         v[k] = r[j];
@@ -495,42 +568,18 @@ void ms(vector<int>& v, int left, int mid, int right){
     }
 }
 
-void merge(vector<int>& v, int left, int right){
+void ms(vector<int>& v, int left, int right){
     if(left < right){
         int mid = left + (right - left)/2;
-        merge(v,left,mid);
-        merge(v,mid+1,right);
-        ms(v,left,mid,right);
+        ms(v,left,mid);
+        ms(v,mid+1,right);
+        merge(v,left,mid,right);
     }
 }
 
 void check(vector<int>& v, int left, int right){
-    if(v.size() <= 0) return;
-    merge(v,left,right);
-}
-
-const int inf = 1e9;
-typedef pair<int,int> pii;
-void prim_mst(int vertices, vector<vector<pii>>& adj){
-    priority_queue<pii,vector<pii>,greater<pii>> pq;
-    pq.push({0,0});
-    vector<int> key(vertices,inf);
-    vector<bool> known(vertices,false);
-    int mst_counter = 0;
-    while(!pq.empty()){
-        int u = pq.top().second;
-        int weight = pq.top().first;
-        pq.pop();
-        if(known[u]) continue;
-        known[u] = true;
-        mst_counter+=weight;
-        for(auto& [v,w] : adj[u]){
-            if(!known[v] && w > key[v]){
-                key[v] = w;
-                pq.push({v,w});
-            }
-        }
-    }
+    if(v.size() <= 1) return;
+    ms(v,left,right);
 }
 
 int main(){
