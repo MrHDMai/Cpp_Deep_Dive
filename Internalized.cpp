@@ -400,36 +400,6 @@ int lis(int* arr, int n){
     return length;
 }
 
-void mergesort(vector<int>& v, int left, int mid, int right){
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
-    vector<int> l(n1),r(n2);
-    for(int i = 0; i < n1; i++)
-        l[i] = v[left + i];
-    for(int j = 0; j < n2; j++)
-        r[j] = v[mid + j + 1];
-    int i = 0, j = 0, k = left;
-    while(i < n1 && j < n2){
-        if(l[i] <= r[j]){
-            v[k] = l[i];
-            i++;
-        } else{
-            v[k] = r[j];
-            j++;
-        }
-        k++;
-    }
-    while(i < n1){
-        v[k] = l[i];
-        i++;
-        k++;
-    }
-    while(j <n2){
-        v[k] = r[j];
-        j++;
-        k++;
-    }
-}
 
 const int inf = 1e9;
 typedef pair<int,int> pii;
@@ -564,6 +534,37 @@ bool subset(int* arr, int n, int target){
         delete[]dp[i];
     delete[] dp;
     return result;
+}
+
+void mergesort(vector<int>& v, int left, int mid, int right){
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    vector<int> l(n1),r(n2);
+    for(int i = 0; i < n1; i++)
+        l[i] = v[left + i];
+    for(int j = 0; j < n2; j++)
+        r[j] = v[mid + j + 1];
+    int i = 0, j = 0, k = left;
+    while(i < n1 && j < n2){
+        if(l[i] <= r[j]){
+            v[k] = l[i];
+            i++;
+        } else{
+            v[k] = r[j];
+            j++;
+        }
+        k++;
+    }
+    while(i < n1){
+        v[k] = l[i];
+        i++;
+        k++;
+    }
+    while(j <n2){
+        v[k] = r[j];
+        j++;
+        k++;
+    }
 }
 
 void merge(vector<int>& v, int left, int right){
