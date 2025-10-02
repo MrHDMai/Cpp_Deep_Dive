@@ -132,6 +132,28 @@ pair<int,vector<int>> cuttingrod(const vector<int>& price, int n){
     return{dp[n],solcut};
 }
 
+struct activity{
+    int start, end;
+    activity(int s, int e) : start(s), end(e){};
+};
+
+bool compare(activity a, activity b){
+    return a.end < b.end;
+}
+
+vector<activity> activityselection(vector<activity>& actions){
+    sort(actions.begin(),actions.end(),compare);
+    int lastend = -1;
+    vector<activity> select;
+    for(auto& act : actions){
+        if(act.start > lastend){
+            select.push_back(act);
+            lastend = act.end;
+        }
+    }
+    return select;
+}
+
 class Detection{
     int vertices;
     vector<vector<int>> adj;
