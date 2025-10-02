@@ -482,7 +482,7 @@ void selection(vector<int>& v){
 int partition(vector<int>& v, int low, int high){
     int pvt = v[high];
     int i = low - 1;
-    if(int j = low; j < high; j++){
+    for(int j = low; j < high; j++){
         if(v[j] < pvt){
             ++i;
             swap(v[i],v[j]);
