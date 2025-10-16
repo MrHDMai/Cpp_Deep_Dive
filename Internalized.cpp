@@ -593,6 +593,76 @@ bool subsetsub(int* arr, int n, int target){
     return result;
 }
 
+class backtrackqueen{
+    vector<vector<string>> sol;
+    unordered_set<int> cols, d1,d2;
+    vector<string> board;
+    int size;
+    void backtrack(int row){
+        if(row == size){
+            sol.push_back(board);
+            return;
+        }
+        for(int col = 0; col < size; col++){
+            if(cols.count(col) || d1.count(row-col) || d2.count(row+col))
+                continue;
+            board[row][col] = 'Q';
+            cols.insert(col);
+            d1.insert(row-col);
+            d2.insert(row+col);
+            backtrack(row+1);
+            board[row][col] = '.';
+            cols.erase(col);
+            d1.erase(row-col);
+            d2.erase(row+col);
+        }
+    } 
+    vector<vector<string>> queensolve(int n){
+        size = n;
+        board = vector<string>(n,string(n,'.'));
+        backtrack(0);
+        return sol;
+    }
+};
+
+const int cpc = 8;
+const int dx[8] = {};
+const int dy[8] = {};
+
+inline bool isvalid(int x, int y, vector<vector<int>>& board){
+    return x >- 0 && y > 0 && x < cpc && y < cpc && board[x][y] == -1;
+}
+
+bool knightsolver(int x, int y, int movecount, vector<vector<int>>& board){
+    if(movecount == cpc * cpc) return;
+    for(int i = 0; i < 8; i++){
+        int nextx = x + dx[i];
+        int nexty = y + dy[i];
+        if(isvalid(nextx,nexty,board)){
+            board[nextx][nexty] = movecount;
+            if(knightsolver(nextx,nexty,movecount+1,board))
+                return true;
+            board[nextx][nexty] = -1;
+        }
+    }
+    return false;
+}
+
+bool knighttour(){
+    vector<vector<int>> board(N,vector<int>(N,-1));
+    board[0][0] = 0;
+    if(!solveknighttour(0,0,1,board)){
+        cout << "No Solution Found.\n";
+        return false;
+    }
+    for(const auto& row : board){
+        for(int cell : row)
+            cout << setw(2) << cell << " ";
+        cout << '\n';
+    }
+    return true;
+}
+
 int main(){
 
 }
