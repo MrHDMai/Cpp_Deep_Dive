@@ -634,7 +634,7 @@ inline bool isvalid(int x, int y, vector<vector<int>>& board){
 }
 
 bool knightsolver(int x, int y, int movecount, vector<vector<int>>& board){
-    if(movecount == cpc * cpc) return;
+    if(movecount == cpc * cpc -1) return;
     for(int i = 0; i < 8; i++){
         int nextx = x + dx[i];
         int nexty = y + dy[i];
