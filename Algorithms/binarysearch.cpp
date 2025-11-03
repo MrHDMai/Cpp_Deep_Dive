@@ -19,10 +19,11 @@ node* insert(node* root, int key){
 }
 
 bool search(node* root, int key){
-    if(root = nullptr) return false;
-    if(key = root->right) return true;
-    if(key = root->left) return search(root->left,key);
-    return search(root->right,key);
+    if(root == nullptr) return false;
+    if(key == root->key) return true;
+    if(key < root->key) return search(root->left,key);
+    else if(key > root->key) return search(root->right,key);
+    return false;
 }
 
 void inorder(node* root){
