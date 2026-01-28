@@ -4,40 +4,45 @@
 using namespace std;
 
 
-//standard implementation using stack - simple to understand when clarity matters and the graph size is manageable
-void dfs(int node, vector<vector<int>>& adj, vector<bool>& visited){
-    visited[node] = true;
-    cout << node << " ";
-
-    for(int neighbor : adj[node]){
-        if(!visited[neighbor]){
-            dfs(neighbor,adj,visited);
-        }
+void dfs(int node, vector<vector<int>>& adj, vector<bool>& known){
+    known[node] = true;
+    cout << node << " " << endl;
+    for(auto& neighbor : adj[node]){
+        if(!known[neighbor])
+            dfs(neighbor, adj, known);
     }
 }
+//known -> check for unknown -> check using recurssion
 
-void dfsIterative(int start, vector<vector<int>>& adj, vector<bool>& visited) {
-    stack<int> stk;
-    stk.push(start);
-
-    while (!stk.empty()) {
-        int node = stk.top();
-        stk.pop();
-
-        if (visited[node]) continue;
-
-        visited[node] = true;
-        cout << node << " ";  // Process the node
-
-        // To mimic recursive DFS order, reverse the neighbors when pushing
-        for (int i = adj[node].size() - 1; i >= 0; --i) {
+void dfsIT(int start,vector<vector<int>>& adj, vector<bool>& known){
+    stack<int> sk;
+    sk.push(start);
+    while(!sk.empty()){
+        int node = sk.top();
+        sk.pop();
+        cout << node << " ";
+        if(known[node]) continue;
+        known[node] = true;
+        for(int i = adj[node].size() - 1; i >= 0; i--){
             int neighbor = adj[node][i];
-            if (!visited[neighbor]) {
-                stk.push(neighbor);
-            }
+            if(!known[neighbor])
+                sk.push(neighbor);
         }
     }
 }
+
+
+// -> create stack (filo) -> pop -> check -> mark -> manually recursed and push
+
+// 2. DFS-IT marks on pop
+// Because popping corresponds to entering a node, mirroring recursive DFS call behavior.
+
+// 3. Marking DFS-IT on push
+// Breaks recursive equivalence and can skip valid paths or alter traversal structure.
+
+// 4. Reverse neighbors
+// To preserve the same visitation order as recursive DFS due to stack LIFO behavior.
+
 
 int main(){
     int vertices, edges;
