@@ -1,24 +1,20 @@
 #include<iostream>
 #include<vector>
 #include<queue>
-
+#include<stack>
 using namespace std;
 
-void bfs(int start, const vector<vector<int>>& adjlist, vector<bool>& visited){
+void bfs(int start, vector<vector<int>>& adj, vector<bool>& known){
     queue<int> q;
     q.push(start);
-    visited[start] = true;
-
-    cout << "bfs traversal starting from node: " << start << ": ";
-
-    while(q.empty()){
+    known[start] = true;
+    while(!q.empty()){
         int node = q.front();
         q.pop();
         cout << node << " ";
-
-        for(int neighbor : adjlist[node]){
-            if(!visited[neighbor]){
-                visited[neighbor] = true;
+        for(auto& neighbor : adj[node]){
+            if(!known[neighbor]){
+                known[neighbor] = true;
                 q.push(neighbor);
             }
         }
@@ -27,21 +23,8 @@ void bfs(int start, const vector<vector<int>>& adjlist, vector<bool>& visited){
 }
 
 int main(){
-    int vertices, edges;
-    cout << "Enter number of vertices and edges: ";
-    cin >> vertices >> edges;
-    vector<vector<int>> adjlist(vertices);
-    cout <<"Enter " << edges << "edges(u v pairs): \n";
-    for(int i = 0; i < edges; i++){
-        int u, v;
-        cin >> u >> v;
-        adjlist[u].push_back(v);
-        adjlist[v].push_back(u);
-    }
-    vector<bool> visited(vertices, false);
-    int startnode; 
-    cout << " Enter the start node for BFS: ";
-    cin >> startnode;
-    bfs(startnode, adjlist, visited);
-    return 0; 
+
 }
+
+// 1. BFS marks on push
+// Because the first discovery of a node guarantees the shortest path, and marking on push prevents duplicate queue entries.

@@ -1,28 +1,23 @@
 #include<iostream>
+#include<vector>
 
 using namespace std;
 
 bool subsetsum(int* arr, int n, int target){
-    bool** dp = new bool*[n + 1];
-    for(int i = 0; i <= n; ++i){
-        dp[i] = new bool[target + 1];
-    }
+    std::vector<char> dp((n + 1LL) * (target + 1), 0);
     for(int i = 0; i <= n; ++i)
-        dp[i][0] = true;
-    for(int j = 1; j <= n; ++j)
-        dp[0][j] = false;
+        dp[i * (target + 1) + 0] = 1;
+    for(int j = 1; j <= target; ++j)
+        dp[0 * (target + 1) + j] = 0;
     for(int i = 1; i <= n; ++i){
         for(int sum = 1; sum <= target; ++sum){
             if(arr[i -1] <= sum)
-                dp[i][sum] = dp[i -1][sum] || dp[i -1][sum - arr[i-1]];
+                dp[i * (target + 1) + sum] = dp[(i -1) * (target + 1) + sum] || dp[(i -1) * (target + 1) + (sum - arr[i-1])];
             else 
-                dp[i][sum] = dp[i-1][sum];
+                dp[i * (target + 1) + sum] = dp[(i -1) * (target + 1) + sum];
         }
     }
-    bool result = dp[n][target];
-    for(int i = 0; i <= n; ++i)
-        delete[] dp[i];
-    delete[] dp;
+    bool result = dp[n * (target + 1) + target] != 0;
     return result;
 }
 
